@@ -21,6 +21,7 @@ const buttonOut = document.querySelector('.button-out');
 let login = localStorage.getItem('topDelivery');
 
 function toggleModalAuth() {
+  loginInput.style.borderColor = '';
   modalAuth.classList.toggle('is-open');
 }
 
@@ -46,15 +47,18 @@ function authorized() {
   buttonOut.addEventListener('click', logOut)
 }
 
+function maskInput(string) {
+  return !!string.trim()
+}
+
 function notAuthorized() {
   console.log('Не авторизован');
 
   function logIn(event) {
     event.preventDefault();
 
-    login = loginInput.value;
-
-    if (login) {
+    if (maskInput(loginInput.value)) {
+      login = loginInput.value;
       localStorage.setItem('topDelivery', login);
       toggleModalAuth();
       buttonAuth.removeEventListener('click', toggleModalAuth);
@@ -63,7 +67,7 @@ function notAuthorized() {
       logInForm.reset();
       checkAuth();
     } else {
-      alert('Введите логин!');
+      loginInput.style.borderColor = 'tomato';
     };
   }
 
