@@ -1,8 +1,8 @@
 'use strict';
 
-const cartButton = document.querySelector("#cart-button");
-const modal = document.querySelector(".modal");
-const close = document.querySelector(".close");
+const cartButton = document.querySelector('#cart-button');
+const modal = document.querySelector('.modal');
+const close = document.querySelector('.close');
 const buttonAuth = document.querySelector('.button-auth');
 const modalAuth = document.querySelector('.modal-auth');
 const closeAuth = document.querySelector('.close-auth');
@@ -20,7 +20,7 @@ const cardsMenu = document.querySelector('.cards-menu');
 let login = localStorage.getItem('topDelivery');
 
 function toggleModal() {
-  modal.classList.toggle("is-open");
+  modal.classList.toggle('is-open');
 }
 
 function toggleModalAuth() {
@@ -80,11 +80,15 @@ function notAuthorized() {
 }
 
 function checkAuth() {
+  let authCheck;
   if (login) {
     authorized();
+    authCheck = true;
   } else {
     notAuthorized();
+    authCheck = false;
   }
+  return authCheck;
 }
 
 function createCardRestaurant() {
@@ -107,7 +111,7 @@ function createCardRestaurant() {
     </a>
   `;
 
-  cardsRestaurants.insertAdjacentHTML('beforeend', card)
+  cardsRestaurants.insertAdjacentHTML('beforeend', card);
 
 }
 
@@ -139,25 +143,29 @@ function createCardGood() {
 }
 
 function openGoods(event) {
-  const target = event.target;
+  if (checkAuth()) {
+    const target = event.target;
 
-  const restaurant = target.closest('.card-restaurant');
-
-  if (restaurant) {
-    cardsMenu.textContent = '';
-    containerPromo.classList.add('hide');
-    restaurants.classList.add('hide');
-    menu.classList.remove('hide');
-
-    createCardGood();
-    createCardGood();
-    createCardGood();
+    const restaurant = target.closest('.card-restaurant');
+  
+    if (restaurant) {
+      cardsMenu.textContent = '';
+      containerPromo.classList.add('hide');
+      restaurants.classList.add('hide');
+      menu.classList.remove('hide');
+  
+      createCardGood();
+      createCardGood();
+      createCardGood();
+    }
+  } else {
+    toggleModalAuth();
   }
 }
 
-cartButton.addEventListener("click", toggleModal);
+cartButton.addEventListener('click', toggleModal);
 
-close.addEventListener("click", toggleModal);
+close.addEventListener('click', toggleModal);
 
 cardsRestaurants.addEventListener('click', openGoods);
 
